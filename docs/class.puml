@@ -1,19 +1,21 @@
 classDiagram
   class BonusEligible {
+    <<interface>>
     +double DEFAULT_BONUS$
-    +getBonus()
-    +setBonus(double bonus)
+    +getBonus() double
+    +setBonus(double bonus) void
   }
 
   class Person {
+    <<Abstract>>
     -String name
     +Person()
     +Person(String name)
-    +getName()
-    +setName(String name)
-    +displayInfo()
-    +final getFullDetails()
-    +printInfo(Person person)$
+    +getName() String
+    +setName(String name) void
+    +displayInfo()* void
+    +getFullDetails() String
+    +printInfo(Person person)$ void
   }
 
   class Employee {
@@ -21,28 +23,33 @@ classDiagram
     +Employee()
     +Employee(String name)
     +Employee(String name, double bonus)
-    +getBonus()
-    +setBonus(double bonus)
-    +abstract displayInfo()*
+    +getBonus() double
+    +setBonus(double bonus) void
+    +displayInfo() void
   }
 
   class Paycheck {
     +double amount
     +String payDate
-    +displayPaycheckInfo()
+    +Paycheck(double amount, String payDate)
+    +displayPaycheckInfo() void
   }
 
   class Payroll {
     -List~Person~ employees
     -Paycheck paycheck
     +Payroll(List~Person~ employees)
-    +void processPayroll(double salary)
+    +processPayroll(double salary) void
   }
 
-  <<interface>> BonusEligible
-  <<Abstract>> Person
-  Employee ..|> BonusEligible: Implementation
-  Person <|-- Employee: Inheritence
+  class PayrollModule {
+    <<Guice Module>>
+    +provideEmployees() List~Person~
+  }
 
-  Payroll "1" *-- "1" Paycheck : Composition
-  Payroll "1" *-- "*"Person: Composition
+  BonusEligible <|.. Employee : implements
+  Person <|-- Employee : extends
+  Payroll o-- Person : aggregates
+  Payroll *-- Paycheck : composition
+  PayrollModule ..> Employee : creates
+  PayrollModule ..> Person : provides

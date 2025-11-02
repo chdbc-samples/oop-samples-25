@@ -4,23 +4,25 @@
 
 ## Структура проєкту
 
-- `BonusEligible.java` - інтерфейс для роботи з бонусами
-- `Person.java` - абстрактний клас особи
-- `Employee.java` - клас працівника
-- `Paycheck.java` - клас квитанції про зарплату
-- `Payroll.java` - клас для обробки зарплати
-- `Main.java` - головний клас з демонстрацією роботи
+- `com.payroll.BonusEligible` - інтерфейс для роботи з бонусами
+- `com.payroll.Person` - абстрактний клас особи
+- `com.payroll.Employee` - клас працівника
+- `com.payroll.Paycheck` - клас квитанції про зарплату
+- `com.payroll.Payroll` - клас для обробки зарплати
+- `com.payroll.Main` - головний клас з демонстрацією роботи
+- `com.payroll.PayrollModule` - конфігураційний модуль для Guice, який налаштовує та впроваджує залежності
 
 ## Компіляція
 
 ```bash
-javac *.java
+cd payroll
+mvn compile
 ```
 
 ## Запуск
 
 ```bash
-java Main
+mvn exec:java -Dexec.mainClass="com.payroll.Main"
 ```
 
 ## Опис роботи

@@ -1,4 +1,8 @@
+package com.payroll;
+
 import java.util.List;
+
+import com.google.inject.Inject;
 
 /**
  * Клас для обробки зарплати працівників
@@ -7,6 +11,7 @@ public class Payroll {
     private List<Person> employees;
     private Paycheck paycheck;
 
+    @Inject
     public Payroll(List<Person> employees) {
         this.employees = employees;
         System.out.println("Створено відомість для " + employees.size() + " працівників");

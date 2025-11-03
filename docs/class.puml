@@ -38,7 +38,7 @@ classDiagram
   class Payroll {
     -List~Person~ employees
     -Paycheck paycheck
-    +Payroll(List~Person~ employees)
+    +setEmployees(List~Person~ employees) void
     +processPayroll(double salary) void
   }
 

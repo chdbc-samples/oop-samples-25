@@ -11,10 +11,15 @@ public class Payroll {
     private List<Person> employees;
     private Paycheck paycheck;
 
+    // @Inject
+    // public Payroll(List<Person> employees) {
+    //     this.employees = employees;
+    //     System.out.println("Створено відомість для " + employees.size() + " працівників");
+    // }
+
     @Inject
-    public Payroll(List<Person> employees) {
+    public void setEmployees(List<Person> employees) {
         this.employees = employees;
-        System.out.println("Створено відомість для " + employees.size() + " працівників");
     }
 
     public void processPayroll(double salary) {

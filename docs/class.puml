@@ -41,7 +41,7 @@ classDiagram
     -List[Person] employees
     -Paycheck paycheck
     -PaymentService paymentService
-    +Payroll(PaymentService paymentService)
+    +setPaymentService(PaymentService paymentService)
     +setEmployees(List[Person] employees) void
     +processPayroll(double salary) void
   }

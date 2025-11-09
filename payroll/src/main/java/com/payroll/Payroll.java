@@ -12,20 +12,19 @@ public class Payroll {
     private Paycheck paycheck;
     private PaymentService paymentService;
 
-    @Inject
-    public Payroll(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
-
     // @Inject
-    // public void setPaymentService(PaymentService paymentService) {
+    // public Payroll(PaymentService paymentService) {
     //     this.paymentService = paymentService;
     // }
+
+    @Inject
+    public void setPaymentService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
     public void setEmployees(List<Person> employees) {
         this.employees = employees;
     }
-
 
     public void processPayroll(double salary) {
         System.out.println("Обробка зарплати...");

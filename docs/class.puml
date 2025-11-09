@@ -1,7 +1,7 @@
 classDiagram
   class BonusEligible {
     <<interface>>
-    +double DEFAULT_BONUS$
+    +double DEFAULT_BONUS
     +getBonus() double
     +setBonus(double bonus) void
   }
@@ -13,9 +13,9 @@ classDiagram
     +Person(String name)
     +getName() String
     +setName(String name) void
-    +displayInfo()* void
+    +displayInfo() void
     +getFullDetails() String
-    +printInfo(Person person)$ void
+    +printInfo(Person person) void
   }
 
   class Employee {
@@ -32,24 +32,47 @@ classDiagram
     +double amount
     +String payDate
     +Paycheck(double amount, String payDate)
+    +getAmount() double
+    +getPayDate() String
     +displayPaycheckInfo() void
   }
 
   class Payroll {
-    -List~Person~ employees
+    -List[Person] employees
     -Paycheck paycheck
-    +setEmployees(List~Person~ employees) void
+    -PaymentService paymentService
+    +Payroll(PaymentService paymentService)
+    +setEmployees(List[Person] employees) void
     +processPayroll(double salary) void
+  }
+
+  class PaymentService {
+    -Connection connection
+    +PaymentService(Connection connection)
+    +savePaycheck(Paycheck paycheck) void
+    +getConnection() Connection
+  }
+
+  class Connection {
+    <<JDBC Interface>>
+  }
+
+  class SQLiteDriver {
+    <<JDBC Driver>>
   }
 
   class PayrollModule {
     <<Guice Module>>
-    +provideEmployees() List~Person~
+    +configure() void
+    +provideConnection(String url) Connection
   }
 
   BonusEligible <|.. Employee : implements
   Person <|-- Employee : extends
   Payroll o-- Person : aggregates
   Payroll *-- Paycheck : composition
-  PayrollModule ..> Employee : creates
-  PayrollModule ..> Person : provides
+  Payroll *-- PaymentService : composition
+  PaymentService --> Connection : depends on
+  PaymentService ..> Paycheck : uses
+  PayrollModule ..> Connection : provides
+  Connection <|.. SQLiteDriver : implements

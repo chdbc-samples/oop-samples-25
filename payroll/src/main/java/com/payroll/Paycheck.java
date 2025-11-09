@@ -13,9 +13,18 @@ public class Paycheck {
         System.out.println("Створено квитанцію на суму: " + amount + " від " + payDate);
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public String getPayDate() {
+        return payDate;
+    }
+
     public void displayPaycheckInfo() {
         System.out.println("Квитанція про зарплату:");
         System.out.println("Сума: " + amount);
         System.out.println("Дата: " + payDate);
     }
 }
+

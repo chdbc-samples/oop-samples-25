@@ -10,17 +10,22 @@ import com.google.inject.Inject;
 public class Payroll {
     private List<Person> employees;
     private Paycheck paycheck;
-
-    // @Inject
-    // public Payroll(List<Person> employees) {
-    //     this.employees = employees;
-    //     System.out.println("Створено відомість для " + employees.size() + " працівників");
-    // }
+    private PaymentService paymentService;
 
     @Inject
+    public Payroll(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+
+    // @Inject
+    // public void setPaymentService(PaymentService paymentService) {
+    //     this.paymentService = paymentService;
+    // }
+
     public void setEmployees(List<Person> employees) {
         this.employees = employees;
     }
+
 
     public void processPayroll(double salary) {
         System.out.println("Обробка зарплати...");
@@ -36,6 +41,10 @@ public class Payroll {
             this.paycheck = new Paycheck(totalAmount, "28.09.2025");
             System.out.println("Зарплата оброблена для: " + person.getName());
             this.paycheck.displayPaycheckInfo();
+            
+            // Збереження квитанції в базу даних
+            paymentService.savePaycheck(this.paycheck);
         }
     }
 }
+

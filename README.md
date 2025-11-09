@@ -9,6 +9,7 @@
 - `com.payroll.Employee` - клас працівника
 - `com.payroll.Paycheck` - клас квитанції про зарплату
 - `com.payroll.Payroll` - клас для обробки зарплати
+- `com.payroll.PaymentService` - сервіс для збереження квитанцій у базу даних SQLite
 - `com.payroll.Main` - головний клас з демонстрацією роботи
 - `com.payroll.PayrollModule` - конфігураційний модуль для Guice, який налаштовує та впроваджує залежності
 
@@ -16,7 +17,7 @@
 
 ```bash
 cd payroll
-mvn compile
+mvn clean install
 ```
 
 ## Запуск
@@ -32,3 +33,12 @@ mvn exec:java -Dexec.mainClass="com.payroll.Main"
 2. Виведення інформації про працівників
 3. Обробку зарплати з урахуванням бонусів
 4. Виведення квитанцій про зарплату
+5. Збереження квитанцій у базу даних SQLite
+
+## База даних
+
+**Драйвер:** SQLite JDBC (`org.xerial:sqlite-jdbc:3.36.0.3`)  
+**Шлях до бази:** `target/payroll.db`  
+**Таблиця `paychecks`:**
+- `amount` (REAL) - сума виплати
+- `pay_date` (TEXT) - дата виплати

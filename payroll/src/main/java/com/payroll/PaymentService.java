@@ -2,7 +2,10 @@ package com.payroll;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.inject.Inject;
 
@@ -43,7 +46,31 @@ public class PaymentService {
             statement.setString(2, paycheck.getPayDate());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to save paycheck", e);
+            throw new RuntimeException("Не вдалося зберегти квитанцію", e);
         }
+    }
+
+    /**
+     * Отримує всі квитанції з бази даних.
+     *
+     * @return список всіх квитанцій
+     */
+    public List<Paycheck> getAllPaychecks() {
+        List<Paycheck> paychecks = new ArrayList<>();
+        String sql = "SELECT amount, pay_date FROM paychecks";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            
+            while (resultSet.next()) {
+                double amount = resultSet.getDouble("amount");
+                String payDate = resultSet.getString("pay_date");
+                paychecks.add(new Paycheck(amount, payDate));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Не вдалося отримати квитанції", e);
+        }
+
+        return paychecks;
     }
 }

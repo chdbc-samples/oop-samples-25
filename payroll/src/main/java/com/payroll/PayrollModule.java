@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import com.payroll.webserver.JavalinWebServer;
+import com.payroll.webserver.WebServer;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -51,7 +53,7 @@ public class PayrollModule extends AbstractModule {
             createTableIfNotExists(connection);
             return connection;
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to create database connection", e);
+            throw new RuntimeException("Не вдалося створити з'єднання з базою даних", e);
         }
     }
 
@@ -72,7 +74,20 @@ public class PayrollModule extends AbstractModule {
         try (Statement statement = connection.createStatement()) {
             statement.execute(createTableSQL);
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to create table", e);
+            throw new RuntimeException("Не вдалося створити таблицю", e);
         }
+    }
+
+    /**
+     * Надає екземпляр WebServer для веб-інтерфейсу.
+     * Використовує Javalin як реалізацію, але може бути легко замінений на інший фреймворк
+     * шляхом зміни лише цього методу.
+     *
+     * @return екземпляр WebServer
+     */
+    @Provides
+    @Singleton
+    WebServer provideWebServer() {
+        return new JavalinWebServer();
     }
 }

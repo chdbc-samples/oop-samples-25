@@ -10,15 +10,10 @@ import com.google.inject.Inject;
 public class Payroll {
     private List<Person> employees;
     private Paycheck paycheck;
-    private PaymentService paymentService;
-
-    // @Inject
-    // public Payroll(PaymentService paymentService) {
-    //     this.paymentService = paymentService;
-    // }
+    private final PaymentService paymentService;
 
     @Inject
-    public void setPaymentService(PaymentService paymentService) {
+    public Payroll(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
 
@@ -45,5 +40,13 @@ public class Payroll {
             paymentService.savePaycheck(this.paycheck);
         }
     }
-}
 
+    /**
+     * Отримує всі квитанції з бази даних.
+     * 
+     * @return список всіх квитанцій
+     */
+    public List<Paycheck> getAllPaychecks() {
+        return paymentService.getAllPaychecks();
+    }
+}

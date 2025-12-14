@@ -10,6 +10,9 @@
 *.tar.gz
 *.rar
 
+# Maven target directory
+target/
+
 # IDE files
 .idea/
 *.iml

@@ -28,6 +28,38 @@ classDiagram
     +displayInfo() void
   }
 
+ mvc
+  class Order {
+    -double totalAmount
+    -String orderDate
+    +Order(double totalAmount, String orderDate)
+    +displayOrderInfo()
+  }
+
+  class RetailSystem {
+    -List~Person~ employees
+    -Order order
+    -OrderService orderService
+    +RetailSystem()
+    +setOrderService(OrderService orderService)
+    +setEmployees(List~Person~ employees)
+    +void processOrders(double baseAmount)
+  }
+
+  class OrderService {
+    -Connection connection
+    +OrderService(Connection connection)
+    +saveOrder(Order order)
+  }
+
+  class Connection {
+    // JDBC Connection
+  }
+
+  class RetailModule {
+    +provideConnection()
+    +createTableIfNotExists(Connection connection)
+
   class Paycheck {
     +double amount
     +String payDate
@@ -44,6 +76,7 @@ classDiagram
     +setPaymentService(PaymentService paymentService)
     +setEmployees(List[Person] employees) void
     +processPayroll(double salary) void
+mvc
   }
 
   class PaymentService {
@@ -67,6 +100,13 @@ classDiagram
     +provideConnection(String url) Connection
   }
 
+mvc
+  RetailSystem "1" *-- "1" Order : Composition
+  RetailSystem "1" *-- "*"Person: Composition
+  RetailSystem --> OrderService : Dependency (Setter Injection)
+  OrderService --> Connection : Dependency
+  RetailModule ..> Connection
+
   BonusEligible <|.. Employee : implements
   Person <|-- Employee : extends
   Payroll o-- Person : aggregates
@@ -76,3 +116,4 @@ classDiagram
   PaymentService ..> Paycheck : uses
   PayrollModule ..> Connection : provides
   Connection <|.. SQLiteDriver : implements
+mvc

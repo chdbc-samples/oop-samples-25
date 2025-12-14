@@ -27,8 +27,9 @@ public class Main {
         // Створюємо Injector
         Injector injector = Guice.createInjector(new RetailModule());
         
-        // Створюємо RetailSystem через Guice
-        RetailSystem retailSystem = injector.getInstance(RetailSystem.class);
+        // Створюємо RetailSystem через new і інжектуємо залежності
+        RetailSystem retailSystem = new RetailSystem();
+        injector.injectMembers(retailSystem);
         retailSystem.setEmployees(employees);
         
         // Обробляємо замовлення

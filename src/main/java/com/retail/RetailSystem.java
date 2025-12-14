@@ -11,18 +11,23 @@ public class RetailSystem {
     private Order order;
     private OrderService orderService;
 
-    @Inject
-    public RetailSystem(OrderService orderService) {
-        this.orderService = orderService;
-        System.out.println("Створено систему через конструктор");
+    // Закоментовано конструктор з @Inject
+    // @Inject
+    // public RetailSystem(OrderService orderService) {
+    //     this.orderService = orderService;
+    //     System.out.println("Створено систему через конструктор");
+    // }
+
+    // Пустий конструктор для setter injection
+    public RetailSystem() {
+        System.out.println("Створено систему через пустий конструктор");
     }
 
-    // Закоментовано setter injection
-    // @Inject
-    // public void setOrderService(OrderService orderService) {
-    //     this.orderService = orderService;
-    //     System.out.println("Встановлено OrderService через setter");
-    // }
+    @Inject
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+        System.out.println("Встановлено OrderService через setter");
+    }
 
     public void setEmployees(List<Person> employees) {
         this.employees = employees;

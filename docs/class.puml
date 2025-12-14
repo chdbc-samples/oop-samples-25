@@ -1,19 +1,21 @@
 classDiagram
   class BonusEligible {
-    +double DEFAULT_BONUS$
-    +getBonus()
-    +setBonus(double bonus)
+    <<interface>>
+    +double DEFAULT_BONUS
+    +getBonus() double
+    +setBonus(double bonus) void
   }
 
   class Person {
+    <<Abstract>>
     -String name
     +Person()
     +Person(String name)
-    +getName()
-    +setName(String name)
-    +displayInfo()
-    +final getFullDetails()
-    +printInfo(Person person)$
+    +getName() String
+    +setName(String name) void
+    +displayInfo() void
+    +getFullDetails() String
+    +printInfo(Person person) void
   }
 
   class Employee {
@@ -21,11 +23,12 @@ classDiagram
     +Employee()
     +Employee(String name)
     +Employee(String name, double bonus)
-    +getBonus()
-    +setBonus(double bonus)
-    +abstract displayInfo()*
+    +getBonus() double
+    +setBonus(double bonus) void
+    +displayInfo() void
   }
 
+ mvc
   class Order {
     -double totalAmount
     -String orderDate
@@ -56,15 +59,61 @@ classDiagram
   class RetailModule {
     +provideConnection()
     +createTableIfNotExists(Connection connection)
+
+  class Paycheck {
+    +double amount
+    +String payDate
+    +Paycheck(double amount, String payDate)
+    +getAmount() double
+    +getPayDate() String
+    +displayPaycheckInfo() void
   }
 
-  <<interface>> BonusEligible
-  <<Abstract>> Person
-  Employee ..|> BonusEligible: Implementation
-  Person <|-- Employee: Inheritence
+  class Payroll {
+    -List[Person] employees
+    -Paycheck paycheck
+    -PaymentService paymentService
+    +setPaymentService(PaymentService paymentService)
+    +setEmployees(List[Person] employees) void
+    +processPayroll(double salary) void
+mvc
+  }
 
+  class PaymentService {
+    -Connection connection
+    +PaymentService(Connection connection)
+    +savePaycheck(Paycheck paycheck) void
+    +getConnection() Connection
+  }
+
+  class Connection {
+    <<JDBC Interface>>
+  }
+
+  class SQLiteDriver {
+    <<JDBC Driver>>
+  }
+
+  class PayrollModule {
+    <<Guice Module>>
+    +configure() void
+    +provideConnection(String url) Connection
+  }
+
+mvc
   RetailSystem "1" *-- "1" Order : Composition
   RetailSystem "1" *-- "*"Person: Composition
   RetailSystem --> OrderService : Dependency (Setter Injection)
   OrderService --> Connection : Dependency
   RetailModule ..> Connection
+
+  BonusEligible <|.. Employee : implements
+  Person <|-- Employee : extends
+  Payroll o-- Person : aggregates
+  Payroll *-- Paycheck : composition
+  Payroll *-- PaymentService : composition
+  PaymentService --> Connection : depends on
+  PaymentService ..> Paycheck : uses
+  PayrollModule ..> Connection : provides
+  Connection <|.. SQLiteDriver : implements
+mvc

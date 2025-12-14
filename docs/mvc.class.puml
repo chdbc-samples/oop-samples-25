@@ -1,0 +1,90 @@
+classDiagram
+  class Payroll {
+    <<Model>>
+    -List[Person] employees
+    -Paycheck paycheck
+    -PaymentService paymentService
+    +Payroll(PaymentService paymentService)
+    +setEmployees(List[Person] employees) void
+    +processPayroll(double salary) void
+    +getAllPaychecks() List[Paycheck]
+  }
+
+  class Paycheck {
+    <<Data>>
+    +double amount
+    +String payDate
+    +Paycheck(double amount, String payDate)
+    +getAmount() double
+    +getPayDate() String
+    +displayPaycheckInfo() void
+  }
+
+  class PaymentService {
+    <<Service>>
+    -Connection connection
+    +PaymentService(Connection connection)
+    +savePaycheck(Paycheck paycheck) void
+    +getAllPaychecks() List[Paycheck]
+    +getConnection() Connection
+  }
+
+  class PayrollController {
+    <<Controller>>
+    -Payroll payroll
+    +PayrollController(Payroll payroll)
+    +getAllPaychecks() List[Paycheck]
+  }
+
+  class PayrollWebView {
+    <<View>>
+    -PayrollController controller
+    -WebServer server
+    +PayrollWebView(PayrollController controller, WebServer server)
+    +start(int port) void
+    +stop() void
+    -setupRoutes() void
+    -getAllPaychecks(HttpContext context) void
+  }
+
+  class WebServer {
+    <<Infrastructure>>
+    +start(int port) void
+    +stop() void
+    +before(RequestHandler handler) void
+    +options(String path, RequestHandler handler) void
+    +get(String path, RequestHandler handler) void
+  }
+
+  class JavalinWebServer {
+    -Javalin app
+    +JavalinWebServer()
+    +start(int port) void
+    +stop() void
+    +before(RequestHandler handler) void
+    +options(String path, RequestHandler handler) void
+    +get(String path, RequestHandler handler) void
+  }
+
+  class HttpContext {
+    <<Interface>>
+  }
+
+  class Response {
+    <<Interface>>
+    +status(int code) Response
+    +header(String name, String value) Response
+    +json(Object obj) Response
+    +result(String content) Response
+  }
+
+  
+  PayrollWebView --> PayrollController : View→Controller
+  PayrollController --> Payroll : Controller→Model
+  Payroll --> PaymentService : uses
+  Payroll *-- Paycheck : creates
+  PayrollWebView --> WebServer : uses
+  WebServer <|.. JavalinWebServer : implements
+  HttpContext --|> Response : extends
+  PayrollWebView ..> HttpContext : uses
+  PaymentService ..> Paycheck : instantiates

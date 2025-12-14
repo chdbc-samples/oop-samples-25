@@ -1,4 +1,4 @@
-package com.payroll;
+package com.retail;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -9,9 +9,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class PayrollModule extends AbstractModule {
+public class RetailModule extends AbstractModule {
 
-    private static final String JDBC_URL = "jdbc:sqlite:target/payroll.db";
+    private static final String JDBC_URL = "jdbc:sqlite:target/retail.db";
 
     @Override
     protected void configure() {
@@ -27,7 +27,7 @@ public class PayrollModule extends AbstractModule {
     }
 
     private void createTableIfNotExists(Connection connection) throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS paychecks (amount REAL, pay_date TEXT)";
+        String sql = "CREATE TABLE IF NOT EXISTS orders (total_amount REAL, order_date TEXT)";
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sql);
         }

@@ -26,30 +26,36 @@ classDiagram
     +abstract displayInfo()*
   }
 
-  class Paycheck {
-    +double amount
-    +String payDate
-    +displayPaycheckInfo()
+  class Order {
+    -double totalAmount
+    -String orderDate
+    +Order(double totalAmount, String orderDate)
+    +displayOrderInfo()
   }
 
-  class Payroll {
+  class RetailSystem {
     -List~Person~ employees
-    -Paycheck paycheck
-    -PaymentService paymentService
-    +Payroll()
-    +setPaymentService(PaymentService paymentService)
+    -Order order
+    -OrderService orderService
+    +RetailSystem()
+    +setOrderService(OrderService orderService)
     +setEmployees(List~Person~ employees)
-    +void processPayroll(double salary)
+    +void processOrders(double baseAmount)
   }
 
-  class PaymentService {
+  class OrderService {
     -Connection connection
-    +PaymentService(Connection connection)
-    +savePaycheck(Paycheck paycheck)
+    +OrderService(Connection connection)
+    +saveOrder(Order order)
   }
 
   class Connection {
     // JDBC Connection
+  }
+
+  class RetailModule {
+    +provideConnection()
+    +createTableIfNotExists(Connection connection)
   }
 
   <<interface>> BonusEligible
@@ -57,7 +63,8 @@ classDiagram
   Employee ..|> BonusEligible: Implementation
   Person <|-- Employee: Inheritence
 
-  Payroll "1" *-- "1" Paycheck : Composition
-  Payroll "1" *-- "*"Person: Composition
-  Payroll --> PaymentService : Dependency (Setter Injection)
-  PaymentService --> Connection : Dependency
+  RetailSystem "1" *-- "1" Order : Composition
+  RetailSystem "1" *-- "*"Person: Composition
+  RetailSystem --> OrderService : Dependency (Setter Injection)
+  OrderService --> Connection : Dependency
+  RetailModule ..> Connection

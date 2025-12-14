@@ -1,4 +1,4 @@
-package com.payroll;
+package com.retail;
 
 /**
  * Абстрактний клас, що представляє особу

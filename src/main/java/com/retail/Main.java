@@ -1,4 +1,4 @@
-package com.payroll;
+package com.retail;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -25,15 +25,14 @@ public class Main {
         employees.add(emp2);
         
         // Створюємо Injector
-        Injector injector = Guice.createInjector(new PayrollModule());
+        Injector injector = Guice.createInjector(new RetailModule());
         
-        // Створюємо Payroll через new і інжектуємо залежності
-        Payroll payroll = new Payroll();
-        injector.injectMembers(payroll);
-        payroll.setEmployees(employees);
+        // Створюємо RetailSystem через Guice
+        RetailSystem retailSystem = injector.getInstance(RetailSystem.class);
+        retailSystem.setEmployees(employees);
         
-        // Обробляємо зарплату
-        System.out.println("\nОбробка зарплати:");
-        payroll.processPayroll(5000.0);
+        // Обробляємо замовлення
+        System.out.println("\nОбробка замовлень:");
+        retailSystem.processOrders(5000.0);
     }
 }

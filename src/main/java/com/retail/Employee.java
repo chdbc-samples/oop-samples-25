@@ -1,4 +1,4 @@
-package com.payroll;
+package com.retail;
 
 /**
  * Клас, що представляє працівника

@@ -1,4 +1,4 @@
-package com.payroll;
+package com.retail;
 
 /**
  * Інтерфейс для роботи з бонусами працівників

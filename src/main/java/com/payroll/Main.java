@@ -27,8 +27,9 @@ public class Main {
         // Створюємо Injector
         Injector injector = Guice.createInjector(new PayrollModule());
         
-        // Отримуємо Payroll через injector
-        Payroll payroll = injector.getInstance(Payroll.class);
+        // Створюємо Payroll через new і інжектуємо залежності
+        Payroll payroll = new Payroll();
+        injector.injectMembers(payroll);
         payroll.setEmployees(employees);
         
         // Обробляємо зарплату

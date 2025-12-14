@@ -11,22 +11,23 @@ public class Payroll {
     private Paycheck paycheck;
     private PaymentService paymentService;
 
-    @Inject
-    public Payroll(PaymentService paymentService) {
-        this.paymentService = paymentService;
-        System.out.println("Створено відомість");
+    // Закоментовано конструктор з @Inject
+    // @Inject
+    // public Payroll(PaymentService paymentService) {
+    //     this.paymentService = paymentService;
+    //     System.out.println("Створено відомість");
+    // }
+
+    // Пустий конструктор для setter injection
+    public Payroll() {
+        System.out.println("Створено відомість через пустий конструктор");
     }
 
-    // Закоментовано для setter injection
-    // public Payroll() {
-    //     System.out.println("Створено відомість через пустий конструктор");
-    // }
-
-    // @Inject
-    // public void setPaymentService(PaymentService paymentService) {
-    //     this.paymentService = paymentService;
-    //     System.out.println("Встановлено PaymentService через setter");
-    // }
+    @Inject
+    public void setPaymentService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+        System.out.println("Встановлено PaymentService через setter");
+    }
 
     public void setEmployees(List<Person> employees) {
         this.employees = employees;

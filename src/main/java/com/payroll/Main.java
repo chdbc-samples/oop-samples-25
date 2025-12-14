@@ -1,3 +1,7 @@
+package com.payroll;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +24,15 @@ public class Main {
         employees.add(emp1);
         employees.add(emp2);
         
-        // Створюємо відомість та обробляємо зарплату
+        // Створюємо Injector
+        Injector injector = Guice.createInjector(new PayrollModule());
+        
+        // Отримуємо Payroll через injector
+        Payroll payroll = injector.getInstance(Payroll.class);
+        payroll.setEmployees(employees);
+        
+        // Обробляємо зарплату
         System.out.println("\nОбробка зарплати:");
-        Payroll payroll = new Payroll(employees);
         payroll.processPayroll(5000.0);
     }
 }

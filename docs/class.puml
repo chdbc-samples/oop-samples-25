@@ -35,8 +35,21 @@ classDiagram
   class Payroll {
     -List~Person~ employees
     -Paycheck paycheck
-    +Payroll(List~Person~ employees)
+    -PaymentService paymentService
+    +Payroll()
+    +setPaymentService(PaymentService paymentService)
+    +setEmployees(List~Person~ employees)
     +void processPayroll(double salary)
+  }
+
+  class PaymentService {
+    -Connection connection
+    +PaymentService(Connection connection)
+    +savePaycheck(Paycheck paycheck)
+  }
+
+  class Connection {
+    // JDBC Connection
   }
 
   <<interface>> BonusEligible
@@ -46,3 +59,5 @@ classDiagram
 
   Payroll "1" *-- "1" Paycheck : Composition
   Payroll "1" *-- "*"Person: Composition
+  Payroll --> PaymentService : Dependency (Setter Injection)
+  PaymentService --> Connection : Dependency
